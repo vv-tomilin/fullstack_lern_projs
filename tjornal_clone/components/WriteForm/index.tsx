@@ -21,8 +21,10 @@ const WriteForm: React.FC<WriteFormProps> = ({ title }) => {
       <div className={styles.editor}>
         <Editor />
       </div>
-      <Button variant="contained" color="primary">
-        Опубликвать
+      <Button
+        variant="contained"
+        color="primary">
+        Опубликовать
       </Button>
     </div>
   )
