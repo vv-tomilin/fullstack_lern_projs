@@ -5,6 +5,7 @@ import multer from 'multer';
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
 
 import checkAuth from './utils/checkAuth.js';
+import handleValidationErrors from './utils/handleValidationErrors.js';
 
 import { register, login, getMe } from './controllers/UserController.js';
 import { getAll, create, getOne, update, remove } from './controllers/PostController.js';
@@ -32,8 +33,8 @@ const upload = multer({ storage });
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-app.post('/auth/login', loginValidation, login);
-app.post('/auth/register', registerValidation, register);
+app.post('/auth/login', loginValidation, handleValidationErrors, login);
+app.post('/auth/register', registerValidation, handleValidationErrors, register);
 app.get('/auth/me', checkAuth, getMe);
 
 app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
@@ -45,9 +46,9 @@ app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
 app.get('/posts', getAll);
 app.get('/posts/:id', getOne);
 
-app.post('/posts', checkAuth, postCreateValidation, create);
+app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, create);
 app.delete('/posts/:id', checkAuth, remove);
-app.patch('/posts/:id', checkAuth, postCreateValidation, update);
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, update);
 
 app.listen(4444, (err) => {
   if (err) {
